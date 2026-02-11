@@ -1,0 +1,29 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class Config:
+    # Telegram Bot Token
+    TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    
+    # Render automatically provides this
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    
+    # Server settings
+    PORT = int(os.getenv('PORT', 10000))
+    HOST = '0.0.0.0'
+    
+    # Webhook settings (Render provides external URL)
+    RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME', '')
+    
+    if RENDER_EXTERNAL_HOSTNAME:
+        WEBHOOK_HOST = RENDER_EXTERNAL_HOSTNAME
+        WEBHOOK_PATH = f'/webhook/{TOKEN}' if TOKEN else ''
+        WEBHOOK_URL = f'https://{WEBHOOK_HOST}{WEBHOOK_PATH}'
+    else:
+        WEBHOOK_URL = None
+    
+    # Bot settings
+    ADMIN_IDS = []  # Add your Telegram ID here
+    LOG_LEVEL = 'INFO'
